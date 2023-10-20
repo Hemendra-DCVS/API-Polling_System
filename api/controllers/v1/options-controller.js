@@ -6,10 +6,10 @@ module.exports.create = async function (req, res) {
     try {
       const questionId = req.params.questionId;
       const { text } = req.body;
-     
+      console.log({ text }, req.params)
       // Create a new option and link it to the specified question
-      const newOption = await Option.create({ text, question: questionId });
-  
+      const newOption = await option.create({ text, question: questionId });
+      newOption.save();
       return res.status(201).json({
          message: 'Option created successfully',
           option: newOption 
@@ -26,7 +26,7 @@ module.exports.create = async function (req, res) {
       const optionId = req.params.optionid;
   
       // Use Mongoose's $inc operator to increment the 'votes' field by 1
-      const updatedOption = await Option.findByIdAndUpdate(optionId, { $inc: { votes: 1 } }, { new: true });
+      const updatedOption = await option.findByIdAndUpdate(optionId, { $inc: { votes: 1 } }, { new: true });
   
       if (!updatedOption) {
         return res.status(404).json({ error: 'Option not found' });
@@ -48,19 +48,19 @@ module.exports.create = async function (req, res) {
         const optionId = req.params.optionid;
 
         // Find the option by ID
-        const option = await Option.findById(optionId);
+        const opt = await option.findById(optionId);
 
-        if (!option) {
+        if (!opt) {
             return res.status(404).json({ error: 'Option not found' });
         }
 
         // Check if votes are 0, if not, prevent deletion
-        if (option.votes > 0) {
+        if (opt.votes > 0) {
             return res.status(400).json({ error: 'Cannot delete; votes exist' });
         }
 
         // If votes are 0, delete the option
-        await Option.findByIdAndDelete(optionId);
+        await option.findByIdAndDelete(optionId);
 
         return res.status(200).json({ 
             message: 'Option deleted successfully'

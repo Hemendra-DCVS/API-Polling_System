@@ -1,5 +1,6 @@
 const question = require('../../models/question');// Import the model
-const option = require('../../models/options'); // Import the model
+const Option = require('../../models/options'); // Import the model
+
 
 
 module.exports.questions = async function (req, res) {
@@ -9,7 +10,7 @@ module.exports.questions = async function (req, res) {
 
         // Map the results to include only the text and votes from options
         const all_questions = questions.map((q) => ({
-            query: q.query,
+            title: q.title,
             options: q.options.map((o) => ({
                 text: o.text,
                 votes: o.votes
@@ -29,65 +30,39 @@ module.exports.questions = async function (req, res) {
 };
 
 
-module.exports.create = async function (req, res) {
+module.exports.create = async (req, res) => {
     try {
-        console.log('*******', req.body);
-        // Create a new question by passing the data from the request body
-        const { query } = req.body;
-
-        // Create a new question with the provided query
-        const newQuestion = await question.create({ query });
-
-        // Send a success response with the created question
-        return res.status(201).json({ 
-            message: 'Question created successfully',
-            question: newQuestion 
-        });
+      // Extract the "title" from the request body
+      const { title } = req.body;
+      console.log(req.body);
+      // Check if the "title" is provided
+      if (!title) {
+        return res.status(400).json({ error: 'Title is required.' });
+      }
+  
+      // Create a new question with the provided title
+      const newQuestion = await question.create({ title });
+  
+      // Send a success response with the created question
+      return res.status(201).json({
+        message: 'Question created successfully',
+        question: newQuestion,
+      });
     } catch (error) {
-        // Handle any errors
-        console.error('Error creating question:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+      // Handle any errors
+      console.error('Error creating question:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
-};
+  };
+  
 
-// module.exports.create = async function (req, res) {
-//     try {
-//         console.log('*******', req.body);
-//         // Create a new question by passing the data from the request body
-//         const { query } = req.body;
-
-//         // Validate the query field
-//         if (req.body.length === 0) {
-//             throw new Error('Query must not be empty.');
-//         }
-
-//         // Create a new question with the provided query
-//         const newQuestion = await question.create({ query });
-
-//         // Send a success response with the created question
-//         return res.status(201).json({ 
-//             message: 'Question created successfully',
-//             question: newQuestion 
-//         });
-//     } catch (error) {
-//         console.log(error);
-//         // Handle validation errors
-//         if (error.name === 'ValidationError') {
-//             return res.status(400).json({ error: error.message });
-//         }
-
-//         // Handle other errors
-//         console.error('Error creating question:', error);
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// };
 
 module.exports.deleteQuestion = async function (req, res) {
     try {
         const questionId = req.params.questionid;
 
         // Delete the associated options
-        await option.deleteMany({ question: questionId });
+        await Option.deleteMany({ question: questionId });
         // Delete the question itself
         await question.findByIdAndDelete(questionId);
 

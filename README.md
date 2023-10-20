@@ -32,18 +32,24 @@ server starts on localhost:8000
 navigate to web.postman.co in browser (make sure you have postman desktop agent installed on your system) 
 1. Please make sure Server is started and listens on port 8000 
 2. enter the correct route url and select the request type (get/post/delete) 
-3. select the body and then select raw or form data.
+3. select the "body" and choose "raw", after that select "JSON" format
 4. To make the crud operations in our API, these are API endpoints listed below
 # create : (POST)
 http://localhost:8000/v1/question/create/
+{
+  "title": "Your question title"
+}
 http://localhost:8000/v1/question/:questionId/options/create/
+{
+  "text": "option"
+}
 # read : (GET)
-http://localhost:8000/
+http://localhost:8000/ 
 # update : (POST)
-http://localhost:8000/v1/:questionId/options/:optionid/vote
+http://localhost:8000/v1//question/:questionId/options/:optionid/vote
 # delete : (DELETE)
 http://localhost:8000/v1/question/:questionid
-http://localhost:8000/v1/:questionId/options/:optionid
+http://localhost:8000/v1/options/:optionid
 
 
 
