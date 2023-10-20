@@ -30,11 +30,12 @@ module.exports.questions = async function (req, res) {
 
 module.exports.create = async function (req, res) {
     try {
+        console.log('*******', req.body);
         // Create a new question by passing the data from the request body
         const { query } = req.body;
 
         // Create a new question with the provided query
-        const newQuestion = await Question.create({ query });
+        const newQuestion = await question.create({ query });
 
         // Send a success response with the created question
         return res.status(201).json({ 

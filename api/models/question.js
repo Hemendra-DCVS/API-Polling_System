@@ -20,7 +20,7 @@ const questionSchema = new mongoose.Schema({
 }, { timestamps: true }); // Enable timestamps for created and updated fields
 
 // Create a Mongoose model for issues using the defined schema
-const Question = mongoose.model('Question', questionSchema);
+const question = mongoose.model('Question', questionSchema);
 
 // Export the Issue model to be used in other parts of the application
-module.exports = Question;
+module.exports = question;
