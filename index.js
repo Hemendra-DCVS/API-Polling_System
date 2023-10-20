@@ -6,7 +6,7 @@ const app = express();
 const db = require('./api/config/mongoose.js');
 
 // Import models
-const Question = require('./api/models/question');
+const question = require('./api/models/question');
 const options = require('./api/models/options');
 
 

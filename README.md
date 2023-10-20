@@ -34,13 +34,16 @@ navigate to web.postman.co in browser (make sure you have postman desktop agent 
 2. enter the correct route url and select the request type (get/post/delete) 
 3. select the body and then select raw or form data.
 4. To make the crud operations in our API, these are API endpoints listed below
-# create :
-
-# read :
-
-# update :
-
-# delete :
+# create : (POST)
+http://localhost:8000/v1/question/create/
+http://localhost:8000/v1/question/:questionId/options/create/
+# read : (GET)
+http://localhost:8000/
+# update : (POST)
+http://localhost:8000/v1/:questionId/options/:optionid/vote
+# delete : (DELETE)
+http://localhost:8000/v1/question/:questionid
+http://localhost:8000/v1/:questionId/options/:optionid
 
 
 
